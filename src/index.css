@@ -156,50 +156,50 @@ button:focus-visible {
 }
 
 .product-description {
-  background-color: #f8f9fa; /* Light background for the card */
-  border: 1px solid #ddd; /* Light border for the card */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin: 15px; /* Space between cards */
-  padding: 15px; /* Inner padding for content */
-  width: 300px; /* Fixed width for uniformity */
-  transition: transform 0.2s; /* Smooth scale effect on hover */
+  background-color: #f8f9fa; 
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  margin: 15px; 
+  padding: 15px; 
+  width: 300px;
+  transition: transform 0.2s;
 }
 
 .product-description h3 {
-  font-size: 1.5rem; /* Larger font for product name */
-  margin: 0 0 10px; /* Space below the title */
-  color: #333; /* Dark color for title */
+  font-size: 1.5rem; 
+  margin: 0 0 10px;
+  color: #333; 
 }
 
 .product-description ul {
-  list-style-type: none; /* Remove bullet points */
-  padding: 0; /* Remove padding */
+  list-style-type: none;
+  padding: 0;
 }
 
 .product-description li {
-  margin-bottom: 10px; /* Space between list items */
-  color: #666; /* Gray color for description */
+  margin-bottom: 10px; 
+  color: #666; 
 }
 
 .price {
-  font-size: 1.25rem; /* Larger font for price */
-  font-weight: bold; /* Bold font for emphasis */
-  color: #1c8134; /* Green color for price */
-  margin: 10px 0; /* Space around price */
+  font-size: 1.25rem; 
+  font-weight: bold; 
+  color: #1c8134;
+  margin: 10px 0;
 }
 
 .buy-button {
-  background-color: #1c8134; /* Bootstrap primary color */
-  color: white; /* White text for contrast */
-  border: none; /* Remove default button border */
-  padding: 10px 15px; /* Padding for button */
-  border-radius: 4px; /* Slightly rounded corners */
-  cursor: pointer; /* Change cursor to pointer */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth hover effects */
+  background-color: #1c8134; 
+  color: white; 
+  border: none; 
+  padding: 10px 15px; 
+  border-radius: 4px; 
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .buy-button:hover {
-  background-color: #115521; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly enlarge button on hover */
+  background-color: #115521; 
+  transform: scale(1.05);
 }
