@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { DataContext } from '../../context/DataContext';
 
-const ProductDetail = ({ product }) => {
+const ProductDetail = () => {
     const { id } = useParams();
-    console.log(product)
-
+    const { data } = useContext(DataContext);
+    // console.log(data)
     return (
         <div className="product_container">
-            {product.map((product) => {
+            {data.map((product) => {
                 if (Number(id) == product.id) {
                     return (
-                        <div className="product-detail">
+                        <div key={product.id} className="product-detail">
                             <h1>{product.title}</h1>
                             <img src={product.image} alt={product.title} width="300px" height="300px" />
                             <p>{product.description}</p>
