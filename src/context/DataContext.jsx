@@ -18,6 +18,18 @@ export function DataProvider({ children }) {
       .then((response) => setData(response));
   };
 
+  const addProduct = (newProduct) => {
+    setData((prevData) => [...prevData, newProduct]);
+    // Optionally, you can also send this new product to the server
+    fetch('http://localhost:3000/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newProduct),
+    });
+  };
+
   useEffect(() => {
     // Fetch data only once when the component mounts
     if (data.length === 0) {
@@ -27,7 +39,7 @@ export function DataProvider({ children }) {
   }, [data]);
 
   return (
-    <DataContext.Provider value={{ data }}>
+    <DataContext.Provider value={{ data,addProduct }}>
       {children}
     </DataContext.Provider>
   );
