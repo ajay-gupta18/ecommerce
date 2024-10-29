@@ -1,17 +1,18 @@
 // DataContext.js
 import { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const DataContext = createContext();
 
 export function DataProvider({ children }) {
   const [data, setData] = useState([]);
+  
 
   // Function to fetch data from the API
   const getData = () => {
-    fetch('http://localhost:3000/products', {
+    fetch('http://localhost:3001/products', {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
       },
     })
       .then((response) => response.json())
@@ -21,10 +22,10 @@ export function DataProvider({ children }) {
   const addProduct = (newProduct) => {
     setData((prevData) => [...prevData, newProduct]);
     // Optionally, you can also send this new product to the server
-    fetch('http://localhost:3000/products', {
+    fetch('http://localhost:3001/products', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
       body: JSON.stringify(newProduct),
     });
