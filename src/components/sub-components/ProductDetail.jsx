@@ -7,7 +7,10 @@ const ProductDetail = () => {
     const { data } = useContext(DataContext);
     // console.log(data)
     return (
-        <div className="product_container">
+
+        <>
+        <div className='nav-space'></div>
+        <div className="product-container">
             {data.map((product) => {
                 if (Number(id) == product.id) {
                     return (
@@ -22,6 +25,7 @@ const ProductDetail = () => {
                 }
             })}
         </div>
+        </>
     );
 };
 

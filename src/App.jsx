@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter,Routes,Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './components/Home'
 import Product from './components/Product'
 import Navbar from './components/Navbar'
@@ -28,25 +28,26 @@ function App() {
   //         });
   // }
   // useEffect(() => {
-    
+
   //       getData()
   //       // console.log(data)
   //       console.log('...fetching')
-      
+
   // }, [])
 
 
-  
+
   return (
     <div className='main-container'>
-      <Navbar/>
-        <Routes>
-          <Route path='/' element={<Home/>}></Route>
-          <Route path='/product' element={<Product  />}></Route>
-          <Route path='/product/:id' element={<ProductDetail  />}></Route>
-          <Route path='/product/addProduct' element={<AddProduct/>}/>
-        </Routes>
-     
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/product' element={<Product />}></Route>
+        <Route path='/product/:id' element={<ProductDetail />}></Route>
+        <Route path='/product/addProduct' element={<AddProduct />} />
+        <Route path='/product/addProduct/:id' element={<AddProduct />} />
+      </Routes>
+
     </div>
   )
 }
