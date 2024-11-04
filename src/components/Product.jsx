@@ -8,15 +8,16 @@ import { FaEdit } from "react-icons/fa";
 // import data from './data/data.json'
 
 const Product = () => {
-    const { data,deleteProduct } = useContext(DataContext);
-    const handleDelete =(id) =>{
+    const token = localStorage.getItem('token')
+    const { data, deleteProduct } = useContext(DataContext);
+    const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this product?")) {
             deleteProduct(id);
         }
     }
     return (
         <>
-          
+
             <div className="card">
                 {data.map((product, index) => (
 
@@ -30,8 +31,11 @@ const Product = () => {
                             <p className="price">${product.price}</p>
                             <button className="buy-button">Buy now</button>
                         </Link>
-                        <Link to={`/product/addProduct/${product.id}`}><button className="buy-button"><FaEdit/></button></Link>
-                        <button onClick={(id)=>handleDelete(product.id)} className='buy-button'><MdDelete/></button>
+                        {token && 
+                        (<>
+                            <Link to={`/product/addProduct/${product.id}`}><button className="buy-button"><FaEdit /></button></Link>
+                            <button onClick={(id) => handleDelete(product.id)} className='buy-button'><MdDelete /></button>
+                        </>)}
 
                     </div>
 

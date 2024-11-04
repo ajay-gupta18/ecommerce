@@ -16,6 +16,10 @@ const Login = () => {
     const confirmPasswordRef = useRef();
     const refs = [emailRef, passwordRef, confirmPasswordRef];
 
+    const generateToken = () => {
+        return Math.floor(Math.random().toString(16));
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         let userIsValid = true;
@@ -37,6 +41,10 @@ const Login = () => {
                     ...prevErrors,
                     invalidCred: 'Invalid credentials'
                 }));
+            } else {
+                const token = generateToken();
+                localStorage.setItem('token', token);
+                navigate('/');
             }
         }
     };
@@ -56,7 +64,7 @@ const Login = () => {
     };
 
     const handleKeyDown = (e, index) => {
-        
+
     };
 
     return (
