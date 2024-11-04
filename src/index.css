@@ -24,7 +24,7 @@
 }
 
 .navbar .icon img {
-  width: 80px;
+  width: 50px;
   height: auto;
   cursor: pointer;
 }
@@ -159,14 +159,16 @@
   max-width: 500px;
   height: 600px;
   margin: auto;
-  margin-top: 10%;
   padding: 5px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
-
+.form-container h3{
+  text-align: center;
+  margin: 20px;
+}
 /* Styling for input fields */
 .input-field {
   display: flex;
@@ -215,7 +217,7 @@
 }
 
 /* Styling for submit button */
-.form-container form button {
+.submit-button {
   width: 100%;
   padding: 12px;
   border: none;
@@ -228,8 +230,8 @@
   transition: background-color 0.3s ease;
 }
 
-.form-container form button:hover {
-  background-color: #357ABD;
+.submit-button:hover {
+  background-color: #375069;
 }
 
 /* Responsive Design */

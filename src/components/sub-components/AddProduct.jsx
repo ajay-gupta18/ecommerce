@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useId, useRef, useState } from 'react';
 import { DataContext } from '../../context/DataContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import InputField from '../micro-components/InputField';
 
 
 const AddProduct = () => {
@@ -116,13 +117,16 @@ const AddProduct = () => {
     return (
         <div className='form-container'>
             <form onSubmit={handleSubmit}>
-                <div className="input-field">
-                    <label htmlFor="title">Title</label>
-                    <input type="text" ref={titleRef} name="title" value={inputValues.title} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 0)} id="title" />
-                    <div className="error-container">
-                        {errors.title && <p className='error'>{errors.title}</p>}
-                    </div>
-                </div>
+            <InputField
+                type="text"
+                label="Title"
+                name="title"
+                value={inputValues.title}
+                onChange={handleChange}
+                onKeyDown={(e) => handleKeyDown(e, 0)}
+                error={errors.title}
+                ref={titleRef}
+            />
                 <div className="input-field">
                     <label htmlFor="description">Description</label>
                     <textarea name="description" id="description" value={inputValues.description} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 1)}></textarea>

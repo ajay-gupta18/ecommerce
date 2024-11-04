@@ -1,4 +1,63 @@
 {
+  "users": [
+    {
+      "id": "d95c",
+      "email": "a@gmail.com",
+      "password": "12345",
+      "confirmPassword": "12345"
+    },
+    {
+      "id": "54fb",
+      "email": "ajay@gmail.com",
+      "password": "121212"
+    },
+    {
+      "id": "372a",
+      "email": "ajay@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "8096",
+      "email": "ajay@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "32d7",
+      "email": "a@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "0bbd",
+      "email": "a@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "1d12",
+      "email": "a@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "fbcc",
+      "email": "ajay@gmail.com",
+      "password": "12345",
+      "confirmPassword": "12345"
+    },
+    {
+      "id": "74d8",
+      "email": "ajay@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "672a",
+      "email": "ajay@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "9966",
+      "email": "ajay@gmail.com",
+      "password": "12345"
+    }
+  ],
   "products": [
     {
       "id": "2",

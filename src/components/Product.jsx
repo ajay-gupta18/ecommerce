@@ -16,7 +16,7 @@ const Product = () => {
     }
     return (
         <>
-            <div className='nav-space'></div>
+          
             <div className="card">
                 {data.map((product, index) => (
 

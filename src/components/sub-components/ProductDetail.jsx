@@ -9,7 +9,7 @@ const ProductDetail = () => {
     return (
 
         <>
-        <div className='nav-space'></div>
+      
         <div className="product-container">
             {data.map((product) => {
                 if (Number(id) == product.id) {
