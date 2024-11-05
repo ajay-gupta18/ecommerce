@@ -1,16 +1,18 @@
-import React, { useContext, useRef, useState } from 'react'
-import InputField from './micro-components/InputField'
-import { UserContext } from '../context/UserContext'
+import React, { useContext, useRef, useState } from 'react';
+import InputField from './micro-components/InputField';
+import { UserContext } from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
     const [userData, setUserData] = useState({
+        fullname: '',
         email: '',
         password: '',
         confirmPassword: '',
+        category: 'buyer'
     });
     const [errors, setErrors] = useState({});
-    const { user, signupUser } = useContext(UserContext);
+    const { user, signupUser, getUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -25,7 +27,7 @@ const SignupForm = () => {
                 [name]: ""
             }));
         }
-    }
+    };
 
     const handleKeyDown = (e, index) => {
         if (e.key === 'Enter') {
@@ -34,9 +36,9 @@ const SignupForm = () => {
                 refs[index + 1].current.focus();
             }
         }
-    }
+    };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let formIsValid = true;
         const newErrors = {};
@@ -54,9 +56,10 @@ const SignupForm = () => {
         }
 
         setErrors(newErrors);
-
+       const existingUsers =  await getUser(); // Fetch existing users
         if (formIsValid) {
-            const userExist = user.some(user => user.email === userData.email);
+            const userExist = existingUsers.some(item => item.email === userData.email);
+            
             if (userExist) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
@@ -64,11 +67,10 @@ const SignupForm = () => {
                 }));
                 return;
             }
-            signupUser(userData);
-
+            await signupUser(userData); // Await the signupUser call
             navigate('/');
         }
-    }
+    };
 
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -79,6 +81,14 @@ const SignupForm = () => {
         <div className='form-container'>
             <h3>Signup form</h3>
             <form onSubmit={handleSubmit}>
+                <InputField
+                    type='text'
+                    label='Full Name'
+                    name='fullname'
+                    value={userData.fullname}
+                    onChange={handleChange}
+                    error={errors.fullname}
+                />
                 <InputField
                     type="email"
                     label="Email"
@@ -109,11 +119,22 @@ const SignupForm = () => {
                     error={errors.confirmPassword}
                     ref={confirmPasswordRef}
                 />
+                <label htmlFor="category">Category :</label>
+                <select
+                    className='input-category'
+                    name="category"
+                    id="category"
+                    value={userData.category}
+                    onChange={handleChange}
+                >
+                    <option value="buyer">Buyer</option>
+                    <option value="seller">Seller</option>
+                </select>
                 <button type="submit" className="submit-button">Signup</button>
-                {<p>already have an account?  <Link to='/loginPage'>Login </Link></p>}
+                <p>already have an account? <Link to='/loginPage'>Login</Link></p>
             </form>
         </div>
-    )
+    );
 }
 
 export default SignupForm;

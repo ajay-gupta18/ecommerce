@@ -5,13 +5,16 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { DataProvider } from './context/DataContext.jsx'
 import { UserProvider } from './context/UserContext.jsx'
+import { ProductProvider } from './context/ProductContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
     <UserProvider>
       <DataProvider>
+        <ProductProvider>
         <App />
+        </ProductProvider>
       </DataProvider>
     </UserProvider>
   </BrowserRouter>

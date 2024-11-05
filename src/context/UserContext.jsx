@@ -5,8 +5,28 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token')
-    const [user, setUser] = useState(null); 
+    const token = localStorage.getItem('token');
+    const [user, setUser] = useState([]); 
+
+    const getUser = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/users", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const userData = await response.json();
+                return userData
+                setUser(userData); 
+            } else {
+                console.log("Failed to get data");
+            }
+        } catch (error) {
+            console.log("Error:", error);
+        }
+    };
 
     const signupUser = async (newUser) => {
         try {
@@ -20,7 +40,7 @@ export const UserProvider = ({ children }) => {
 
             if (response.ok) {
                 const createdUser = await response.json();
-                setUser(createdUser);
+                setUser(prevUser => [...prevUser, createdUser]); // Update state with new user
                 navigate('/');
             } else {
                 console.error('Failed to sign up');
@@ -32,7 +52,7 @@ export const UserProvider = ({ children }) => {
 
     const loginUser = async (credentials) => {
         try {
-            const response = await fetch("http://localhost:3000/users?email=" + credentials.email + "&password=" + credentials.password, {
+            const response = await fetch(`http://localhost:3000/users?email=${encodeURIComponent(credentials.email)}&password=${encodeURIComponent(credentials.password)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,7 +63,7 @@ export const UserProvider = ({ children }) => {
                 const users = await response.json();
                 if (users.length > 0) {
                     setUser(users[0]);
-                    navigate('/');
+                    navigate('/'); 
                     return true;
                 } else {
                     console.error('Invalid credentials');
@@ -60,13 +80,13 @@ export const UserProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
         setUser(null);
         navigate('/');
     };
 
     return (
-        <UserContext.Provider value={{ user, signupUser, loginUser, logout }}>
+        <UserContext.Provider value={{ user, signupUser, loginUser, logout, getUser }}>
             {children}
         </UserContext.Provider>
     );

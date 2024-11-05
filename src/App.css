@@ -40,3 +40,84 @@
 .read-the-docs {
   color: #888;
 } */
+
+/* Cart Container Styles */
+.main-container{
+  display: block;
+}
+.main-container h3{
+  text-align: center;
+  font-weight: 600;
+}
+.cart-container {
+  max-width: 90%;
+  max-height: 10%; 
+  margin: 10px auto;
+  padding: 10px; 
+  background-color: #fffffff8; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.39); 
+}
+
+/* Heading Styles */
+.cart-container h2 {
+  font-size: 24px; /* Font size for the heading */
+  color: #333; /* Dark gray color for the text */
+  margin-bottom: 20px; /* Spacing below the heading */
+  text-align: center; /* Center the heading */
+}
+
+/* Unordered List Styles */
+.cart-container ul {
+  list-style-type: none;
+  padding: 0; /* Remove padding */
+}
+
+/* Cart Item Styles */
+.cart-item {
+  display: flex; 
+  align-items: center; 
+  border-bottom: 1px solid #ddd; 
+  padding: 1px 0; 
+}
+
+.cart-item:last-child {
+  border-bottom: none; /* Remove border from the last item */
+}
+
+/* Title Styles */
+.cart-item h3 {
+  flex-grow: 1; /* Allow title to grow and take space */
+  font-size: 18px; /* Font size for the title */
+  color: #007bff; /* Bootstrap primary color */
+  margin: 0; /* Remove default margin */
+}
+
+/* Image Styles */
+.cart-item img {
+  margin-right: 15px; /* Space between image and text */
+  border-radius: 5px; /* Slightly rounded image */
+  object-fit: cover; /* Cover the area without distortion */
+}
+
+/* Price Styles */
+.price {
+  font-size: 16px; /* Font size for the price */
+  color: #333; /* Dark gray for price text */
+  font-weight: bold; /* Bold text for emphasis */
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .cart-container {
+      padding: 10px; /* Less padding on smaller screens */
+  }
+
+  .cart-item h3 {
+      font-size: 16px; 
+  }
+
+  .price {
+      font-size: 14px; /* Smaller font size for prices */
+  }
+}
