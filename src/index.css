@@ -33,7 +33,7 @@ body {
   left: 0;
   right: 0;
   height: 65px; 
-  padding: 2rem 2rem;
+  padding: 1rem 2rem; 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -81,7 +81,6 @@ body {
   font-size: small;
   color: #ecf0f1d3;
   text-decoration: none;
-  font-size: small;
   text-transform: uppercase;
   font-weight: 600;
   transition: color 0.3s ease;
@@ -96,7 +95,6 @@ body {
   color: #ffffffdc;
 }
 
-
 .product-link .login {
   padding: 0.5rem 1rem;
   background-color: #F3A847;
@@ -108,12 +106,108 @@ body {
   transition: all 0.3s ease;
   font-weight: bold;
   margin-top: 2px;
-
 }
 
 .product-link .login:hover {
   background-color: #F3A847;
   border: 1px solid #F3A847;
+}
+
+.mobile-menu-icon {
+  display: none;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.836);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+
+  .navbar .product-link {
+    display: none;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    background: #14212C;
+    padding: 1rem;
+    gap: 10px;
+  }
+
+  .navbar .product-link.open {
+    display: flex;
+  }
+
+  .navbar .product-link .nav-single-btn a {
+    font-size: small;
+  }
+
+  .navbar .product-link .nav-single-btn a svg {
+    font-size: 12px;
+  }
+
+  .product-link .login {
+    padding: 0.3rem 0.8rem;
+    font-size: small;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+  }
+
+  .navbar .icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar .product-link {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    background: #14212C;
+    padding: 1rem;
+    gap: 10px;
+  }
+
+  .navbar .product-link.open {
+    display: flex;
+  }
+
+  .navbar .product-link .nav-single-btn a {
+    font-size: small;
+  }
+
+  .navbar .product-link .nav-single-btn a svg {
+    font-size: 10px;
+  }
+
+  .product-link .login {
+    padding: 0.3rem 0.6rem;
+    font-size: small;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+  }
 }
 
 /* card stying */
