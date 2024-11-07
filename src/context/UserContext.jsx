@@ -23,7 +23,6 @@ export const UserProvider = ({ children }) => {
     const [allUsersData, setAllUsersData] = useState([]); 
 
     useEffect(() => {
-        // Fetch user data when the component mounts
         const fetchUsers = async () => {
             await getUser();
         };
@@ -44,10 +43,9 @@ export const UserProvider = ({ children }) => {
             if (response.ok) {
                 const users = await response.json();
                 setAllUsersData(users); 
-                // Ensure cart is always an array
                 users.forEach(user => {
                     if (!Array.isArray(user.cart)) {
-                        user.cart = []; // Set cart to an empty array if it's not an array
+                        user.cart = [];
                     }
                 });
                 return users; 
@@ -73,8 +71,8 @@ export const UserProvider = ({ children }) => {
     
             if (response.ok) {
                 const createdUser = await response.json();
-                setUsersData(createdUser); // Set the created user data in the context, including the `id`
-                setAllUsersData((prevUsers) => [...prevUsers, createdUser]); // Update all users
+                setUsersData(createdUser);
+                setAllUsersData((prevUsers) => [...prevUsers, createdUser]);
                 toast("User created successfully")
                 navigate('/loginPage'); 
                 
@@ -98,12 +96,12 @@ export const UserProvider = ({ children }) => {
             if (response.ok) {
                 const users = await response.json();
                 if (users.length > 0) {
-                    setUsersData(users[0]); // This will set the entire user object, including the `id`
+                    setUsersData(users[0]);
                     navigate('/');
                     toast('login successfully')
                     return true;
                 } else {
-                    toast('Invalid credentials');
+                    toast.error('Invalid credentials');
                     return false;
                 }
             } else {
@@ -133,9 +131,8 @@ export const UserProvider = ({ children }) => {
                 toast.error("Product is already in the cart");
                 return;
             }
-    
-    
-            // Ensure cart is an array before updating
+
+
             const updatedCart = Array.isArray(usersData.cart) ? [...usersData.cart, product] : [product];
             setUsersData((prevData) => ({
                 ...prevData,
@@ -166,8 +163,6 @@ export const UserProvider = ({ children }) => {
                 console.error("User ID is missing. Cannot update cart.");
                 return;
             }
-    
-            // Ensure cart is an array before updating
             const updatedCart = usersData.cart.filter(product=>product.id!==productId)
             setUsersData((prevData) => ({
                 ...prevData,
@@ -198,7 +193,6 @@ export const UserProvider = ({ children }) => {
                 return;
             }
     
-            // Ensure cart is an array before updating
             const updatedWishlist = usersData.wishlist.filter(product=>product.id!==productId)
             setUsersData((prevData) => ({
                 ...prevData,
@@ -223,39 +217,47 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    const addToWishList =async(product)=>{
-        try {
-            if (!usersData.id) {
-                console.error("User ID is missing. Cannot update wishlist.");
-                return;
-            }
-            // Ensure cart is an array before updating
-            const updatedWishlist = Array.isArray(usersData.wishlist) ? [...usersData.wishlist, product] : [product];
-            setUsersData((prevData) => ({
-                ...prevData,
-                wishlist: updatedWishlist
-            }));
-    
-            const response = await fetch(`http://localhost:3000/users/${usersData.id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ wishlist: updatedWishlist })
-            });
-    
-            if (!response.ok) {
-                toast.error('Failed to update wishlist in backend');
-            } else {
-                toast.success('Wishlist successfully updated in backend');
-            }
-        } catch (error) {
-            console.error('Error updating wishlist:', error);
+    const toggleWishlist = (product) => {
+        if (!usersData.id) {
+            console.error("User ID is missing. Cannot update wishlist.");
+            return;
         }
-    }
+
+        const isProductInWishlist = usersData.wishlist.some(item => item.id === product.id);
+        const updatedWishlist = isProductInWishlist
+            ? usersData.wishlist.filter(item => item.id !== product.id)
+            : [...usersData.wishlist, product];
+
+        setUsersData((prevData) => ({
+            ...prevData,
+            wishlist: updatedWishlist
+        }));
+
+        const updateWishlistInBackend = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/users/${usersData.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ wishlist: updatedWishlist })
+                });
+
+                if (!response.ok) {
+                    console.error('Failed to update wishlist in backend');
+                } else {
+                    console.log('Wishlist successfully updated in backend');
+                }
+            } catch (error) {
+                console.error('Error updating wishlist:', error);
+            }
+        };
+
+        updateWishlistInBackend();
+    };
 
     return (
-        <UserContext.Provider value={{ usersData, allUsersData, signupUser, loginUser, logout, getUser, setUsersData, addToCart,addToWishList,removeFromCart,removeFromWishlist }}>
+        <UserContext.Provider value={{ usersData, allUsersData, signupUser, loginUser, logout, getUser, setUsersData, addToCart,removeFromCart,removeFromWishlist,toggleWishlist }}>
             {children}
         </UserContext.Provider>
     );

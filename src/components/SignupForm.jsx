@@ -58,7 +58,7 @@ const SignupForm = () => {
 
         setErrors(newErrors);
 
-        const existingUsers = await getUser(); // Fetch existing users
+        const existingUsers = await getUser(); 
         if (formIsValid) {
             const userExist = existingUsers.some(item => item.email === formData.email);
 
@@ -69,7 +69,7 @@ const SignupForm = () => {
                 }));
                 return;
             }
-            await signupUser(formData); // Await the signupUser call
+            await signupUser(formData); 
             navigate('/loginPage');
         }
     };

@@ -15,24 +15,21 @@ const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
 
-    // Generate a random token
+    
     const generateToken = () => {
-        return Math.random().toString(36).substr(2); // Generates a random alphanumeric string
+        return Math.random().toString(8); 
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         let userIsValid = true;
         const newErrors = {};
-
-        // Validate input fields
         Object.keys(input).forEach((key) => {
             if (!input[key].trim()) {
                 newErrors[key] = 'This field is required';
                 userIsValid = false;
             }
         });
-
         setErrors(newErrors);
 
         if (userIsValid) {
@@ -44,8 +41,8 @@ const Login = () => {
                 }));
             } else {
                 const token = generateToken();
-                localStorage.setItem('token', token); // Store the token in localStorage
-                navigate('/'); // Redirect to the homepage
+                localStorage.setItem('token', token); 
+                navigate('/'); 
             }
         }
     };

@@ -17,7 +17,6 @@ const Router = () => {
       <Route path='/signupPage' element={<SignupForm />} />
       <Route path='/loginPage' element={<Login />} />
       
-      {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path='/product/:id' element={<ProductDetail />} />
         <Route path='/product' element={<Product />} />

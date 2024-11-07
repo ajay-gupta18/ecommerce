@@ -29,17 +29,17 @@ body {
 /* Navbar styling */
 .navbar {
   position: fixed;
-  top: 0; /* Fix the navbar to the top */
+  top: 0;
   left: 0;
   right: 0;
-  height: 65px; /* Ensure this matches the .nav-space height */
+  height: 65px; 
   padding: 2rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #14212C; /* Background color for the navbar */
-  color: #fff; /* Text color for the navbar */
-  z-index: 1000; /* Ensure the navbar is above other content */
+  background: #14212C; 
+  color: #fff; 
+  z-index: 1000;
 }
 
 .navbar .icon {
@@ -121,8 +121,8 @@ body {
   background-color: #EAEDED;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  gap: 27px;
+  /* justify-content: center; */
   padding: 20px;
 }
 
@@ -233,7 +233,8 @@ body {
   transition: background-color 0.3s;
 }
 .wish-list svg{
-  font-size: 20px;
+  font-size: 15px;
+  color: rgba(255, 0, 0, 0.692);
 }
 .wish-list:hover{
   transform: translateY(-1px);

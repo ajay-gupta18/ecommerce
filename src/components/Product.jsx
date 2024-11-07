@@ -2,20 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from '../context/DataContext';
 import { UserContext } from '../context/UserContext';
-import { CiHeart } from 'react-icons/ci';
 import { TiShoppingCart } from 'react-icons/ti';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 
 const Product = () => {
-    // const [onActive, setOnActive] = useState(false);
     const token = localStorage.getItem('token');
-    const { data, deleteProduct } = useContext(DataContext);
-    const {addToWishList,addToCart} = useContext(UserContext)
+    const { data } = useContext(DataContext);
+    const {usersData,toggleWishlist,addToCart} = useContext(UserContext)
 
-    const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this product?")) {
-            deleteProduct(id);
-        }
+    const isProductInWishlist = (product) => {
+        return usersData.wishlist.some(item => item.id === product.id);
     };
 
     return (
@@ -31,21 +28,13 @@ const Product = () => {
                         </div>
                     </Link>
                     <div className='btn-group'>
-                        <button className="wish-list" onClick={() => addToWishList(product)}>
-                        <CiHeart />
+                        <button className="wish-list" onClick={() => toggleWishlist(product)}>
+                        {isProductInWishlist(product) ? <FaHeart /> : <FaRegHeart />}
                            Wishlist 
                         </button>
                         <button className="add-to-cart" onClick={() => addToCart(product)}>
                         <TiShoppingCart /> 
                         </button>
-                        {/* {token && (
-                            <div className="admin-buttons">
-                                <Link to={`/product/editProduct/${product.id}`}>
-                                    <button className="edit-button"><FaEdit /></button>
-                                </Link>
-                                <button onClick={() => handleDelete(product.id)} className='delete-button'><MdDelete /></button>
-                            </div>
-                        )} */}
                     </div>
                 </div>
             ))}
