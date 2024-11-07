@@ -1,12 +1,37 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
-    const [user, setUser] = useState([]); 
+    const initialUserData = {
+        id: '',
+        fullname: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        cart: [],
+        wishlist: []
+    };
+    const [usersData, setUsersData] = useState(()=>{
+        const storedUserData = localStorage.getItem('usersData');
+        return storedUserData ? JSON.parse(storedUserData) : initialUserData;
+    });
+    const [allUsersData, setAllUsersData] = useState([]); 
+
+    useEffect(() => {
+        // Fetch user data when the component mounts
+        const fetchUsers = async () => {
+            await getUser();
+        };
+        fetchUsers();
+    }, []);
+    useEffect(()=>{
+        localStorage.setItem('usersData',JSON.stringify(usersData))
+    },[usersData])
 
     const getUser = async () => {
         try {
@@ -17,14 +42,22 @@ export const UserProvider = ({ children }) => {
                 }
             });
             if (response.ok) {
-                const userData = await response.json();
-                return userData
-                setUser(userData); 
+                const users = await response.json();
+                setAllUsersData(users); 
+                // Ensure cart is always an array
+                users.forEach(user => {
+                    if (!Array.isArray(user.cart)) {
+                        user.cart = []; // Set cart to an empty array if it's not an array
+                    }
+                });
+                return users; 
             } else {
                 console.log("Failed to get data");
+                return [];
             }
         } catch (error) {
             console.log("Error:", error);
+            return [];
         }
     };
 
@@ -37,16 +70,19 @@ export const UserProvider = ({ children }) => {
                 },
                 body: JSON.stringify(newUser),
             });
-
+    
             if (response.ok) {
                 const createdUser = await response.json();
-                setUser(prevUser => [...prevUser, createdUser]); // Update state with new user
-                navigate('/');
+                setUsersData(createdUser); // Set the created user data in the context, including the `id`
+                setAllUsersData((prevUsers) => [...prevUsers, createdUser]); // Update all users
+                toast("User created successfully")
+                navigate('/loginPage'); 
+                
             } else {
                 console.error('Failed to sign up');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error during signup:', error);
         }
     };
 
@@ -58,15 +94,16 @@ export const UserProvider = ({ children }) => {
                     'Content-Type': 'application/json'
                 }
             });
-
+    
             if (response.ok) {
                 const users = await response.json();
                 if (users.length > 0) {
-                    setUser(users[0]);
-                    navigate('/'); 
+                    setUsersData(users[0]); // This will set the entire user object, including the `id`
+                    navigate('/');
+                    toast('login successfully')
                     return true;
                 } else {
-                    console.error('Invalid credentials');
+                    toast('Invalid credentials');
                     return false;
                 }
             } else {
@@ -80,13 +117,145 @@ export const UserProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
+        localStorage.removeItem('token','usersData');
+        setUsersData(initialUserData); 
         navigate('/');
     };
 
+    const addToCart = async (product) => {
+        try {
+            if (!usersData.id) {
+                console.error("User ID is missing. Cannot update cart.");
+                return;
+            }
+            const isProductInCart = usersData.cart.some(item => item.id === product.id);
+            if (isProductInCart) {
+                toast.error("Product is already in the cart");
+                return;
+            }
+    
+    
+            // Ensure cart is an array before updating
+            const updatedCart = Array.isArray(usersData.cart) ? [...usersData.cart, product] : [product];
+            setUsersData((prevData) => ({
+                ...prevData,
+                cart: updatedCart
+            }));
+    
+            const response = await fetch(`http://localhost:3000/users/${usersData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cart: updatedCart })
+            });
+    
+            if (!response.ok) {
+                toast.error('Failed to update cart in backend');
+            } else {
+                toast.success('Cart successfully updated in backend');
+            }
+        } catch (error) {
+            console.error('Error updating cart:', error);
+        }
+    };
+
+    const removeFromCart =async(productId)=>{
+        try {
+            if (!usersData.id) {
+                console.error("User ID is missing. Cannot update cart.");
+                return;
+            }
+    
+            // Ensure cart is an array before updating
+            const updatedCart = usersData.cart.filter(product=>product.id!==productId)
+            setUsersData((prevData) => ({
+                ...prevData,
+                cart: updatedCart
+            }));
+    
+            const response = await fetch(`http://localhost:3000/users/${usersData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cart: updatedCart })
+            });
+    
+            if (!response.ok) {
+                toast.error('Failed to update cart in backend');
+            } else {
+                toast.success('Cart successfully updated in backend');
+            }
+        } catch (error) {
+            console.error('Error updating cart:', error);
+        }
+    }
+    const removeFromWishlist =async(productId)=>{
+        try {
+            if (!usersData.id) {
+                console.error("User ID is missing. Cannot update cart.");
+                return;
+            }
+    
+            // Ensure cart is an array before updating
+            const updatedWishlist = usersData.wishlist.filter(product=>product.id!==productId)
+            setUsersData((prevData) => ({
+                ...prevData,
+                wishlist: updatedWishlist
+            }));
+    
+            const response = await fetch(`http://localhost:3000/users/${usersData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ wishlist: updatedWishlist })
+            });
+    
+            if (!response.ok) {
+                toast.error('Failed to update wishlist in backend');
+            } else {
+                toast.success('Wishlist successfully updated in backend');
+            }
+        } catch (error) {
+            console.error('Error updating Wishlist:', error);
+        }
+    }
+
+    const addToWishList =async(product)=>{
+        try {
+            if (!usersData.id) {
+                console.error("User ID is missing. Cannot update wishlist.");
+                return;
+            }
+            // Ensure cart is an array before updating
+            const updatedWishlist = Array.isArray(usersData.wishlist) ? [...usersData.wishlist, product] : [product];
+            setUsersData((prevData) => ({
+                ...prevData,
+                wishlist: updatedWishlist
+            }));
+    
+            const response = await fetch(`http://localhost:3000/users/${usersData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ wishlist: updatedWishlist })
+            });
+    
+            if (!response.ok) {
+                toast.error('Failed to update wishlist in backend');
+            } else {
+                toast.success('Wishlist successfully updated in backend');
+            }
+        } catch (error) {
+            console.error('Error updating wishlist:', error);
+        }
+    }
+
     return (
-        <UserContext.Provider value={{ user, signupUser, loginUser, logout, getUser }}>
+        <UserContext.Provider value={{ usersData, allUsersData, signupUser, loginUser, logout, getUser, setUsersData, addToCart,addToWishList,removeFromCart,removeFromWishlist }}>
             {children}
         </UserContext.Provider>
     );

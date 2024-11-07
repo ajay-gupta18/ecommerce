@@ -4,21 +4,22 @@ import { UserContext } from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
-    const [userData, setUserData] = useState({
+    const [formData, setFormData] = useState({
         fullname: '',
         email: '',
         password: '',
         confirmPassword: '',
-        category: 'buyer'
+        cart:[],
+        wishlist:[]
     });
     const [errors, setErrors] = useState({});
-    const { user, signupUser, getUser } = useContext(UserContext);
+    const { signupUser, getUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData((prevUserData) => ({
-            ...prevUserData,
+        setFormData((prevData) => ({
+            ...prevData,
             [name]: value
         }));
         if (value.trim()) {
@@ -43,23 +44,24 @@ const SignupForm = () => {
         let formIsValid = true;
         const newErrors = {};
 
-        Object.keys(userData).forEach((key) => {
-            if (!userData[key].trim()) {
+        Object.keys(formData).forEach((key) => {
+            if (!formData[key]) {
                 newErrors[key] = 'This field is required.';
                 formIsValid = false;
             }
         });
 
-        if (userData.password !== userData.confirmPassword) {
+        if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = "Passwords do not match.";
             formIsValid = false;
         }
 
         setErrors(newErrors);
-       const existingUsers =  await getUser(); // Fetch existing users
+
+        const existingUsers = await getUser(); // Fetch existing users
         if (formIsValid) {
-            const userExist = existingUsers.some(item => item.email === userData.email);
-            
+            const userExist = existingUsers.some(item => item.email === formData.email);
+
             if (userExist) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
@@ -67,8 +69,8 @@ const SignupForm = () => {
                 }));
                 return;
             }
-            await signupUser(userData); // Await the signupUser call
-            navigate('/');
+            await signupUser(formData); // Await the signupUser call
+            navigate('/loginPage');
         }
     };
 
@@ -85,7 +87,7 @@ const SignupForm = () => {
                     type='text'
                     label='Full Name'
                     name='fullname'
-                    value={userData.fullname}
+                    value={formData.fullname}
                     onChange={handleChange}
                     error={errors.fullname}
                 />
@@ -93,7 +95,7 @@ const SignupForm = () => {
                     type="email"
                     label="Email"
                     name="email"
-                    value={userData.email}
+                    value={formData.email}
                     onChange={handleChange}
                     onKeyDown={(e) => handleKeyDown(e, 0)}
                     error={errors.email}
@@ -103,7 +105,7 @@ const SignupForm = () => {
                     type="password"
                     label="Password"
                     name="password"
-                    value={userData.password}
+                    value={formData.password}
                     onChange={handleChange}
                     onKeyDown={(e) => handleKeyDown(e, 1)}
                     error={errors.password}
@@ -113,28 +115,18 @@ const SignupForm = () => {
                     type="password"
                     label="Confirm Password"
                     name="confirmPassword"
-                    value={userData.confirmPassword}
+                    value={formData.confirmPassword}
                     onChange={handleChange}
                     onKeyDown={(e) => handleKeyDown(e, 2)}
                     error={errors.confirmPassword}
                     ref={confirmPasswordRef}
                 />
-                <label htmlFor="category">Category :</label>
-                <select
-                    className='input-category'
-                    name="category"
-                    id="category"
-                    value={userData.category}
-                    onChange={handleChange}
-                >
-                    <option value="buyer">Buyer</option>
-                    <option value="seller">Seller</option>
-                </select>
                 <button type="submit" className="submit-button">Signup</button>
-                <p>already have an account? <Link to='/loginPage'>Login</Link></p>
+                <p>Already have an account? <Link to='/loginPage'>Login</Link></p>
             </form>
         </div>
     );
 }
 
 export default SignupForm;
+

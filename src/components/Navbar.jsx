@@ -2,42 +2,60 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import online from '../assets/online-shop.png'
 import { UserContext } from '../context/UserContext'
-import { TiShoppingCart } from "react-icons/ti";
-import ProductContext from '../context/ProductContext';
+import { BsCart } from "react-icons/bs";
+import { FaHeart } from 'react-icons/fa';
+import { AiFillProduct } from "react-icons/ai";
 
 const Navbar = () => {
   const token = localStorage.getItem('token')
-  const { user, logout } = useContext(UserContext)
-  const { cart } = useContext(ProductContext)
+  const { usersData, logout } = useContext(UserContext)
 
-  const [count,setCount] = useState(0)
+  const [cartCount, setCartCount] = useState(0)
+  const [wishlistCount, setWishlistcount] = useState(0)
   useEffect(() => {
-    setCount(cart.length);
-  }, [cart]);
- 
+    setCartCount(usersData.cart.length);
+    setWishlistcount(usersData.wishlist.length);
+  }, [usersData]);
+
 
   return (
     <div className='navbar'>
       <div className='icon'>
         <img src={online} alt="logo" />
-        <Link to='/'><span>SpiderCraftStore.com</span></Link>
+        <Link to='/'><span className='permanent-marker-regular'>SpiderCraftStore.com</span></Link>
       </div>
-
       <div className='product-link'>
-        <div className='tab-link'>
-
-          {token ? (
-            <>
-              <Link to='/product/cart'><span className='cart' style={{fontSize:'20px'}}><TiShoppingCart/><sup>{count}</sup></span></Link>
-              <Link to='/product'>Products</Link>
-              <Link to='/product/addProduct'><button>Add Product</button></Link>
-
-              <button className='login' onClick={logout}>Logout</button></>
-          ) : (
-            <Link to='/loginPage'><button className='login'>Login</button></Link>
-          )}
-        </div>
+        {token ? (
+          <>
+            <div className='nav-single-btn'>
+              <Link to='/product'>
+                <AiFillProduct />
+                <span>Products</span>
+              </Link>
+            </div>
+            <div  className='nav-single-btn'>
+              <Link to='/product/cart'>
+              <div style={{position:'relative'}}> 
+                <BsCart /><sup style={{ position: "absolute", top: '0px', right: '-9px', borderRadius: '50%', color: '#F3A847', padding: '0px 3px' }}>{cartCount}</sup>
+                </div>
+                <span>Cart</span>
+              </Link>
+            </div>
+            <div className="nav-single-btn">
+              <Link to='/product/wishlist'>
+                <div style={{position:'relative'}}> 
+                <FaHeart />
+                <sup style={{ position: "absolute", top: '0px', right: '-10px', borderRadius: '50%', color: '#F3A847', padding: '0px 3px' }}>{wishlistCount}</sup>
+                </div>
+                <span >WishList</span></Link>
+            </div>
+            <button className='login' onClick={logout}>Logout</button>
+          </>
+        ) : (
+          <Link to='/loginPage'><button className='login'>Login</button></Link>
+        )}
       </div>
+
     </div>
   )
 }
