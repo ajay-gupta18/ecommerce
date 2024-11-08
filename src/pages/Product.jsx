@@ -19,14 +19,14 @@ const Product = () => {
         <div className='product-container'>
             {data && data.map((product, index) => (
                 <div key={index} className="card">
-                    <Link to={`/product/${product.id}`} className="product-link">
+                    <a href={`/product/${product.id}`} className="product-link">
                         <img src={product.image} alt="product" className="product-image" />
                         <h3 className="product-name">{product.title.slice(0,20)+'...'}</h3>
                         <div className='price-rating'>
                             <p className="price">${product.price}</p>
                             <p className='rating'><span>Rating: </span>{product.rating}⭐</p>
                         </div>
-                    </Link>
+                    </a>
                     <div className='btn-group'>
                         <button className="wish-list" onClick={() => toggleWishlist(product)}>
                         {isProductInWishlist(product) ? <FaHeart /> : <FaRegHeart />}

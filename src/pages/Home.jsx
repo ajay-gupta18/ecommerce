@@ -1,5 +1,4 @@
 import { CCarousel, CCarouselCaption, CCarouselItem, CImage } from '@coreui/react';
-import './Styles/Home.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import image from '../assets/image.jpg'
 

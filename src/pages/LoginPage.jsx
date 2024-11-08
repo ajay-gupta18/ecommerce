@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useState } from 'react';
-import InputField from './micro-components/InputField';
-import { UserContext } from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
+import InputField from '../components/micro-components/InputField';
+import { UserContext } from '../context/UserContext';
 
-const Login = () => {
+const LoginPage = () => {
     const { loginUser } = useContext(UserContext);
     const [input, setInput] = useState({
         email: "",
@@ -91,4 +91,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

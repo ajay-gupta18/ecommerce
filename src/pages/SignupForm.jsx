@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
-import InputField from './micro-components/InputField';
-import { UserContext } from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
+import InputField from '../components/micro-components/InputField';
+import { UserContext } from '../context/UserContext';
 
 const SignupForm = () => {
     const [formData, setFormData] = useState({

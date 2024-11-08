@@ -72,6 +72,15 @@
       "confirmPassword": "12345",
       "cart": [],
       "wishlist": []
+    },
+    {
+      "id": "c718",
+      "fullname": "Ajay Gupta ",
+      "email": "ag@gmail.com",
+      "password": "12345",
+      "confirmPassword": "12345",
+      "cart": [],
+      "wishlist": []
     }
   ],
   "products": [
