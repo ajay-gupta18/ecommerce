@@ -1,42 +1,70 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialStateValue = {
+const initialState = {
   users: [],
-  status: "idle",
-  error: null,
 };
 
-export const fetchUsersData = createAsyncThunk(
-  "users/fetchUsersData",
-  async () => {
-    const res = await fetch("http://localhost:3000/users");
-    console.log(res);
-    return res.json();
+export const fetchusers = createAsyncThunk("users/fetchusers", async () => {
+  const res = await fetch("http://localhost:3000/users");
+  const data=await res.json();
+  return data;
+});
+
+export const addToCartAsync = createAsyncThunk(
+  "users/addToCart",
+  async ({ userId, item }) => {
+    const res = await fetch(`http://localhost:3000/users/${userId}`);
+    const user = await res.json();
+
+    const updatedUser = {
+      ...user,
+      cart: [...(user.cart || []), item],
+    };
+
+    await fetch(`http://localhost:3000/users/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart: updatedUser.cart }),
+    });
+
+    return updatedUser;
   }
 );
 
+
 export const usersSlice = createSlice({
-  name: "users",
-  initialState: initialStateValue,
+  name: "user",
+  initialState,
   reducers: {
-    setUsersData: (state, action) => {
-        state.users = action.payload;
-      },
-    addToCart:{
-        
-    }
+    addToCart: (state, action) => {
+      const userIndex = state.users.findIndex(user => user.id === action.payload.userId);
+      if (userIndex !== -1) {
+        state.users[userIndex] = {
+          ...state.users[userIndex],
+          cart: [...(state.users[userIndex].cart || []), action.payload.item]
+        };
+      }
+    },
   },
+  
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUsersData.pending, (state) => {
-        state.status = "pending";
-      })
-      .addCase(fetchUsersData.fulfilled, (state, action) => {
-        state.status = "fulfilled";
-        state.users = action.payload;
-      }).addCase(fetchUsersData.rejected,(state,action)=>{
-        state.status='rejected';
-        state.error= action.error.message;
-      })
+    builder.addCase(fetchusers.pending, (state) => {
+      state.users = [];
+    });
+    builder.addCase(fetchusers.fulfilled, (state, action) => {
+      state.users = [...action.payload];
+    });
+    builder.addCase(fetchusers.rejected, (state) => {
+      state.users = [];
+    }).addCase(addToCartAsync.fulfilled, (state, action) => {
+      const index = state.users.findIndex(user => user.id === action.payload.id);
+      if (index !== -1) {
+        state.users[index] = action.payload;
+      }
+    });
   },
 });
+export const {addToCart}=usersSlice.actions;
+export default usersSlice.reducer;
