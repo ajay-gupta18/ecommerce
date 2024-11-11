@@ -1,7 +1,3 @@
-Sure! Below is a sample `README.md` file for your eCommerce website:
-
----
-
 # SpiderCraftStore.com
 
 Welcome to **SpiderCraftStore.com**, your one-stop online shop for all your crafting needs. This eCommerce website offers a seamless and intuitive shopping experience, packed with features to enhance user interaction and satisfaction.
@@ -92,14 +88,6 @@ Contributions are welcome! Please follow these steps to contribute:
 5. Push to the branch (`git push origin feature/YourFeature`).
 6. Open a pull request.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Contact
 
-For any questions or suggestions, please feel free to reach out to us at support@spidercraftstore.com.
-
----
-
-This README file provides a comprehensive overview of your eCommerce website, highlighting key features and guiding users on how to set up and contribute to the project. Adjust the details as per your project's specifics and repository links.
+For any questions or suggestions, please feel free to reach out to us at officialajay1810@gmail.com
