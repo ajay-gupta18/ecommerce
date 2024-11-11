@@ -16,18 +16,6 @@ export function DataProvider({ children }) {
       .then((response) => setData(response));
   };
 
-  //addproduct
-  const addProduct = async (newProduct) => {
-    setData((prevData) => [...prevData, newProduct]);
-    await fetch("http://localhost:3000/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      body: JSON.stringify(newProduct),
-    });
-  };
-
   useEffect(() => {
     if (data.length === 0) {
       getData();
@@ -36,7 +24,7 @@ export function DataProvider({ children }) {
   }, [data]);
 
   return (
-    <DataContext.Provider value={{ data, addProduct,setData }}>
+    <DataContext.Provider value={{ data,setData }}>
       {children}
     </DataContext.Provider>
   );
