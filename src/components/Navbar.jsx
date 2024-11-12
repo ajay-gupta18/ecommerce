@@ -5,19 +5,25 @@ import { UserContext } from '../context/UserContext';
 import { BsCart } from "react-icons/bs";
 import { FaHeart } from 'react-icons/fa';
 import { AiFillProduct } from "react-icons/ai";
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import hamburger and close icons
+import { FaBars, FaTimes } from 'react-icons/fa'; 
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
   const token = localStorage.getItem('token');
-  const { usersData, logout } = useContext(UserContext);
+  const {  logout } = useContext(UserContext);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistcount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); 
+  const cartData = useSelector((state)=>state.users.cart)
+  const wishlistData = useSelector((state)=>state.users.wishlist)
 
   useEffect(() => {
-    setCartCount(usersData.cart.length);
-    setWishlistcount(usersData.wishlist.length);
-  }, [usersData]);
+    setCartCount(cartData.length);
+  }, [cartData]);
+
+  useEffect(() => {
+    setWishlistcount(wishlistData.length);
+  }, [wishlistData]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

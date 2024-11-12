@@ -4,12 +4,14 @@ const initialState = {
   productData: [],
 };
 
-export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
-  const res = await fetch("http://localhost:3000/products");
-  console.log(res);
-  
-  return res.json();
-});
+export const fetchProducts = createAsyncThunk(
+  "products/fetchProducts",
+  async () => {
+    const res = await fetch("http://localhost:3000/products");
+    console.log(res);
+    return res.json();
+  }
+);
 
 export const productSlice = createSlice({
   name: "product",
@@ -20,7 +22,7 @@ export const productSlice = createSlice({
       state.products = [];
     });
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.products =[...action.payload];
+      state.products = [...action.payload];
     });
     builder.addCase(fetchProducts.rejected, (state) => {
       state.products = [];
@@ -29,4 +31,3 @@ export const productSlice = createSlice({
 });
 
 export default productSlice.reducer;
-
