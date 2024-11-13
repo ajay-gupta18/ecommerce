@@ -8,81 +8,81 @@ import { addItemToCart, toggleItemToWishlist } from "../redux/slice/usersSlice";
 
 const Product = () => {
   const token = localStorage.getItem("token");
+  // const [loading,setLoading] = useState(true)
   const dispatch = useDispatch();
   const productData = useSelector((state) => state.product.products);
-  const wishlistData = useSelector((state)=>state.users.wishlist)
+  const wishlistData = useSelector((state) => state.users.wishlist);
   const userId = useSelector((state) => state.users.id);
+  const user = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
 
-  const handleWishlistToggle = async(product) => {
-    dispatch(toggleItemToWishlist(product))
-    try {
-      const response = await fetch(`http://localhost:3000/users/${userId}`);
-      const user = await response.json();
+  const isWishlistItemExist = (productId) => {
+    return wishlistData.some((item) => item.id === productId);
+  };
 
+  const handleWishlistToggle = async (product) => {
+    dispatch(toggleItemToWishlist(product));
+    try {
       let updatedWishlist;
       if (isWishlistItemExist(product.id)) {
-        updatedWishlist = user.wishlist.filter((item) => item.id !== product.id);
+        updatedWishlist = user.wishlist.filter(
+          (item) => item.id !== product.id
+        );
       } else {
         updatedWishlist = [...user.wishlist, product];
       }
-      const updateResponse = await fetch(`http://localhost:3000/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...user,
-          wishlist: updatedWishlist,
-        }),
-      });
+      const updateResponse = await fetch(
+        `http://localhost:3000/users/${userId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...user,
+            wishlist: updatedWishlist,
+          }),
+        }
+      );
 
       if (!updateResponse.ok) {
         throw new Error("Failed to update wishlist");
       }
-      dispatch({ type: "users/updateWishlist", payload: updatedWishlist });
       console.log("Wishlist updated successfully!");
     } catch (error) {
       console.error("Error updating wishlist:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleAddToCart = async(product) => {
-    dispatch(addItemToCart(product))
+  const handleAddToCart = async (product) => {
+    dispatch(addItemToCart(product));
     try {
-      const response = await fetch(`http://localhost:3000/users/${userId}`);
-      const user = await response.json();
       const updatedCart = [...user.cart, product];
-      const updateResponse = await fetch(`http://localhost:3000/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...user,
-          cart: updatedCart,
-        }),
-      });
+      const updateResponse = await fetch(
+        `http://localhost:3000/users/${userId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...user,
+            cart: updatedCart,
+          }),
+        }
+      );
 
       if (!updateResponse.ok) {
         throw new Error("Failed to update cart");
       }
-      
-      dispatch({ type: "users/updateCart", payload: updatedCart });
       toast("Cart updated successfully!");
     } catch (error) {
       console.error("Error adding item to cart:", error);
-    } 
+    }
   };
-
-  const isWishlistItemExist = (productId)=>{
-    return wishlistData.some((item) => item.id === productId);
-  }
 
   return (
     <div className="product-container">
@@ -109,9 +109,9 @@ const Product = () => {
             <div className="btn-group">
               <button
                 className="wish-list"
-                onClick={ ()=>handleWishlistToggle(product)}
+                onClick={() => handleWishlistToggle(product)}
               >
-                { isWishlistItemExist(product.id) ? <FaHeart /> : <FaRegHeart />}
+                {isWishlistItemExist(product.id) ? <FaHeart /> : <FaRegHeart />}
                 Wishlist
               </button>
               <button

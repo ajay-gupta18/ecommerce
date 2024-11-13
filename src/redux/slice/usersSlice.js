@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
   id: "",
+  fullname: "",
   email: "",
   cart: [],
   wishlist: [],
@@ -15,9 +16,10 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     loggedUser: (state, action) => {
-      const { id, email, cart, wishlist } = action.payload;
+      const { id, email, cart, wishlist, password, fullname } = action.payload;
       state.id = id;
       state.email = email;
+      state.fullname = fullname;
       state.cart = cart;
       state.wishlist = wishlist;
     },
@@ -33,6 +35,9 @@ const usersSlice = createSlice({
     },
     removeItemFromCart: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
+    },
+    removeItemFromWishlist: (state, action) => {
+      state.wishlist = state.wishlist.filter((item) => item.id !== action.payload);
     },
     toggleItemToWishlist: (state, action) => {
       const item = action.payload;
@@ -57,5 +62,6 @@ export const {
   removeItemFromCart,
   addItemToCart,
   toggleItemToWishlist,
+  removeItemFromWishlist
 } = usersSlice.actions;
 export default usersSlice.reducer;
